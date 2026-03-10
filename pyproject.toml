@@ -1,12 +1,29 @@
 [build-system]
-requires = ["setuptools>=61"]
+requires = ["setuptools>=61", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "muon-wire-estimator"
 version = "0.1.0"
 description = "Muon wire signal estimator"
-requires-python = ">=3.9"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+  { name = "Caden Glenn" }
+]
+license = { text = "Proprietary" }
+dependencies = []
+
+[project.optional-dependencies]
+plot = [
+  "matplotlib>=3.7"
+]
+
+[tool.setuptools]
+include-package-data = true
 
 [tool.setuptools.packages.find]
 include = ["muon_wire_estimator*"]
+
+[tool.setuptools.package-dir]
+"" = "."
