@@ -1,0 +1,33 @@
+{
+    "calibration_name": "default_surrogate_arco2_demo",
+    "version": "1.0",
+    "source": "hand_tuned_placeholder_for_future_garfield_replacement",
+    "applies_to_gas": "ar_co2_70_30_1atm",
+    "gas_overrides": {
+      "collection_efficiency": 0.92,
+      "drift_velocity_m_per_s": 55000.0,
+      "notes": "Example gas override block for future replacement by Garfield++-derived calibration."
+    },
+    "gain_overrides": {
+      "use_calibrated_gain": true,
+      "mean_gain_scale": 1.35,
+      "mean_gain_offset": 0.0,
+      "gain_shape_override": 1.8,
+      "notes": "Example gain rescaling to demonstrate Level 3 calibrated vs default comparison."
+    },
+    "drift_overrides": {
+      "drift_velocity_scale": 1.05,
+      "collection_fraction_scale": 0.98,
+      "notes": "Example drift block showing how later transport tuning can be stored."
+    },
+    "pulse_overrides": {
+      "width_scale": 1.1,
+      "voltage_scale": 1.0,
+      "notes": "Example pulse block reserved for later electronics/scope calibration usage."
+    },
+    "metadata": {
+      "description": "Default example surrogate calibration record for Ar/CO2 70/30.",
+      "intended_use": "Demonstrate the Level 3 calibrated comparison workflow before Garfield++-derived numbers are available.",
+      "replacement_plan": "Replace these fields with gas-, field-, and geometry-dependent calibration products from Garfield++ studies when available."
+    }
+  }

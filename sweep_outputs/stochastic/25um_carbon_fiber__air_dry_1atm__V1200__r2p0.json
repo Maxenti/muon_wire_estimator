@@ -1,0 +1,56 @@
+{
+  "config_snapshot": {
+    "avalanche_pulse_width_s": 1.2e-08,
+    "gas_name": "air_dry_1atm",
+    "simulation": {
+      "gain_fluctuation_shape": 1.5,
+      "include_zero_signal_events": true,
+      "n_events": 2000,
+      "primary_statistics_model": "poisson",
+      "random_seed": 12345,
+      "return_event_list": false,
+      "survival_statistics_model": "binomial",
+      "threshold_v": 0.001
+    },
+    "use_attachment": true,
+    "use_gain_surrogate": true
+  },
+  "event_records": [],
+  "fraction_above_threshold": 0.0,
+  "input_metadata": {
+    "description": "Level 2 stochastic repeated-event simulation example using Ar/CO2 70/30.",
+    "example_name": "level2_arco2_event_scan",
+    "notes": "Use this file with scripts/run_event_scan.py to estimate event-by-event visibility and threshold crossing.",
+    "primary_scope_quantity": "event_records[].peak_voltage_v",
+    "summary_scope_quantity": "fraction_above_threshold"
+  },
+  "max_peak_voltage_v": 2.9928822738249075e-07,
+  "mean_gas_gain": 1.1491121593104239,
+  "mean_peak_voltage_v": 4.582209040410183e-08,
+  "mean_primary_electrons_collected": 118.8465,
+  "mean_primary_electrons_created": 279.381,
+  "median_peak_voltage_v": 3.5272867344562886e-08,
+  "metadata": {
+    "gain_fluctuation_shape": 1.5,
+    "gas_name": "air_dry_1atm",
+    "input_n_events": 2000,
+    "primary_statistics_model": "poisson",
+    "primary_statistics_proxy": {
+      "fano_factor": 0.25,
+      "gas_name": "air_dry_1atm",
+      "mean_cluster_count": 155.22875816993465,
+      "mean_electrons_per_cluster": 1.8,
+      "primary_electrons_mean": 279.4117647058824,
+      "primary_electrons_sigma_proxy": 8.357807199048718,
+      "primary_electrons_variance_proxy": 69.8529411764706
+    },
+    "random_seed": 12345,
+    "retained_n_events": 2000,
+    "survival_statistics_model": "binomial",
+    "use_attachment": true,
+    "use_gain_surrogate": true
+  },
+  "min_peak_voltage_v": 6.754181548060571e-11,
+  "n_events": 2000,
+  "threshold_v": 0.001
+}

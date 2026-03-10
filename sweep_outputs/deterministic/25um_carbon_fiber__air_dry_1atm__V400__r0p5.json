@@ -1,0 +1,200 @@
+{
+  "attachment_survival_fraction": 0.8852590189641997,
+  "avalanche_charge_c": 2.7741087488904863e-17,
+  "avalanche_electrons_mean": 173.14624929740964,
+  "avalanche_pulse": {
+    "charge_c": 2.7741087488904863e-17,
+    "fall_time_s": 2e-08,
+    "metadata": {
+      "effective_width_s": 2.3854127499222052e-08,
+      "effective_wire_capacitance_f": 2.7855878475946295e-12,
+      "electronics_fall_time_s": 2e-08,
+      "electronics_rise_time_s": 5e-09,
+      "intrinsic_width_s": 1.2e-08,
+      "model_name": "gas_avalanche_pulse",
+      "rc_time_constant_s": 1.3927939237973147e-10,
+      "signal_family": "avalanche",
+      "termination_ohm": 50.0
+    },
+    "model_name": "gas_avalanche_pulse",
+    "peak_current_a": 1.162947061878896e-09,
+    "peak_voltage_v": 5.81473530939448e-08,
+    "rise_time_s": 5e-09,
+    "termination_ohm": 50.0,
+    "width_s": 2.3854127499222052e-08
+  },
+  "collected_primary_electrons_mean": 173.14624929740964,
+  "collection_fraction_total": 0.6196813132749397,
+  "created_primary_electrons_mean": 279.4117647058824,
+  "direct_pulse": {
+    "charge_c": 2.8673884164113344e-18,
+    "fall_time_s": 2e-08,
+    "metadata": {
+      "effective_width_s": 2.291330178627999e-08,
+      "effective_wire_capacitance_f": 2.7855878475946295e-12,
+      "electronics_fall_time_s": 2e-08,
+      "electronics_rise_time_s": 5e-09,
+      "intrinsic_width_s": 1e-08,
+      "model_name": "direct_muon_image_pulse",
+      "rc_time_constant_s": 1.3927939237973147e-10,
+      "signal_family": "direct",
+      "termination_ohm": 50.0
+    },
+    "model_name": "direct_muon_image_pulse",
+    "peak_current_a": 1.2514077818886264e-10,
+    "peak_voltage_v": 6.257038909443132e-09,
+    "rise_time_s": 5e-09,
+    "termination_ohm": 50.0,
+    "width_s": 2.291330178627999e-08
+  },
+  "drift_time_s": 9.750000000000001e-09,
+  "estimator_version": "level1-deterministic-1.0",
+  "gas": {
+    "attachment_time_s": 8e-08,
+    "collection_efficiency": 0.7,
+    "drift_velocity_m_per_s": 50000.0,
+    "fano_factor": 0.25,
+    "gain_cap": 2000.0,
+    "gain_field_scale_v_per_m": 9000000.0,
+    "gain_slope": 0.22,
+    "mean_cluster_size_electrons": 1.8,
+    "mean_energy_loss_mev_per_cm": 0.0019,
+    "name": "air_dry_1atm",
+    "notes": "Highly uncertain surrogate for dry air at 1 atm. Air is attachment-prone and avalanche predictions should be treated as qualitative unless externally calibrated.",
+    "pressure_atm": 1.0,
+    "temperature_k": 293.15,
+    "w_value_ev": 34.0
+  },
+  "gas_gain_mean": 1.0,
+  "geometry": {
+    "active_length_m": 0.3,
+    "bias_voltage_v": 400.0,
+    "effective_capacitance_f": 0.0,
+    "effective_outer_radius_m": 0.005,
+    "electronics_fall_time_s": 2e-08,
+    "electronics_rise_time_s": 5e-09,
+    "mean_avalanche_pulse_width_s": 1e-08,
+    "notes": "Level 2 stochastic event-scan example for a 25 um diameter sense wire and a near-wire muon pass.",
+    "scope_termination_ohm": 50.0,
+    "sense_wire_radius_m": 1.2499999999999999e-05,
+    "track_closest_approach_m": 0.0005,
+    "track_length_in_active_m": 0.05
+  },
+  "metadata": {
+    "available_builtin_gases": [
+      "air_dry_1atm",
+      "ar_co2_70_30_1atm"
+    ],
+    "config": {
+      "avalanche_pulse_width_s": 1.2e-08,
+      "direct_charge_efficiency": 1.0,
+      "gas_name": "air_dry_1atm",
+      "geometry": {
+        "active_length_m": 0.3,
+        "bias_voltage_v": 400.0,
+        "effective_capacitance_f": 0.0,
+        "effective_outer_radius_m": 0.005,
+        "electronics_fall_time_s": 2e-08,
+        "electronics_rise_time_s": 5e-09,
+        "mean_avalanche_pulse_width_s": 1e-08,
+        "notes": "Level 2 stochastic event-scan example for a 25 um diameter sense wire and a near-wire muon pass.",
+        "scope_termination_ohm": 50.0,
+        "sense_wire_radius_m": 1.2499999999999999e-05,
+        "track_closest_approach_m": 0.0005,
+        "track_length_in_active_m": 0.05
+      },
+      "include_avalanche_signal": true,
+      "include_direct_image_pulse": true,
+      "metadata": {
+        "description": "Level 2 stochastic repeated-event simulation example using Ar/CO2 70/30.",
+        "example_name": "level2_arco2_event_scan",
+        "notes": "Use this file with scripts/run_event_scan.py to estimate event-by-event visibility and threshold crossing.",
+        "primary_scope_quantity": "event_records[].peak_voltage_v",
+        "summary_scope_quantity": "fraction_above_threshold"
+      },
+      "output_event_details": false,
+      "use_attachment": true,
+      "use_gain_surrogate": true
+    },
+    "drift_summary": {
+      "attachment_survival_fraction": 0.8852590189641997,
+      "collection_fraction_total": 0.6196813132749397,
+      "drift_distance_m": 0.00048750000000000003,
+      "drift_time_s": 9.750000000000001e-09,
+      "drift_velocity_m_per_s": 50000.0,
+      "metadata": {
+        "attachment_time_s": 8e-08,
+        "average_drift_field_v_per_m": 260533.2298109924,
+        "gas_collection_efficiency": 0.7,
+        "gas_name": "air_dry_1atm",
+        "use_attachment": true
+      }
+    },
+    "estimator_version": "level1-deterministic-1.0",
+    "gain_summary": {
+      "avalanche_charge_c": 2.7741087488904863e-17,
+      "avalanche_electrons_mean": 173.14624929740964,
+      "collected_primary_electrons_mean": 173.14624929740964,
+      "gain_activation_argument": 0.0,
+      "gas_gain_mean": 1.0,
+      "metadata": {
+        "gain_cap": 2000.0,
+        "gain_field_scale_v_per_m": 9000000.0,
+        "gain_slope": 0.22,
+        "gas_name": "air_dry_1atm",
+        "use_gain_surrogate": true
+      },
+      "surface_field_v_per_m": 5340931.211125345
+    },
+    "geometry_summary": {
+      "active_length_m": 0.3,
+      "active_track_fraction": 0.16666666666666669,
+      "average_drift_field_v_per_m": 260533.2298109924,
+      "bias_voltage_v": 400.0,
+      "direct_image_charge_sharing_factor": 0.06405181557002007,
+      "effective_outer_radius_m": 0.005,
+      "effective_wire_capacitance_f": 2.7855878475946295e-12,
+      "electronics_fall_time_s": 2e-08,
+      "electronics_rise_time_s": 5e-09,
+      "ln_b_over_a": 5.991464547107982,
+      "mean_avalanche_pulse_width_s": 1e-08,
+      "notes": "Level 2 stochastic event-scan example for a 25 um diameter sense wire and a near-wire muon pass.",
+      "radial_drift_distance_m": 0.00048750000000000003,
+      "scope_termination_ohm": 50.0,
+      "sense_wire_radius_m": 1.2499999999999999e-05,
+      "surface_field_v_per_m": 5340931.211125345,
+      "track_closest_approach_m": 0.0005,
+      "track_length_in_active_m": 0.05,
+      "track_radius_m_clamped": 0.0005,
+      "wire_capacitance_per_length_f_per_m": 9.285292825315432e-12
+    },
+    "ionization_summary": {
+      "energy_loss_ev": 9500.0,
+      "energy_loss_mev": 0.0095,
+      "mean_cluster_count": 155.22875816993465,
+      "mean_electrons_per_cluster": 1.8,
+      "metadata": {
+        "gas_name": "air_dry_1atm",
+        "mean_energy_loss_mev_per_cm": 0.0019,
+        "w_value_ev": 34.0
+      },
+      "primary_charge_c": 4.476670006764706e-17,
+      "primary_electrons_mean": 279.4117647058824,
+      "track_length_m": 0.05
+    },
+    "primary_statistics_proxy": {
+      "fano_factor": 0.25,
+      "gas_name": "air_dry_1atm",
+      "mean_cluster_count": 155.22875816993465,
+      "mean_electrons_per_cluster": 1.8,
+      "primary_electrons_mean": 279.4117647058824,
+      "primary_electrons_sigma_proxy": 8.357807199048718,
+      "primary_electrons_variance_proxy": 69.8529411764706
+    }
+  },
+  "notes": [
+    "Deterministic Level 1 estimate using phenomenological gas, drift, gain, and pulse surrogates.",
+    "Direct muon image pulse and ordinary gas-avalanche pulse are reported separately.",
+    "Air predictions are especially uncertain because attachment and avalanche behavior are highly environment-dependent."
+  ]
+}

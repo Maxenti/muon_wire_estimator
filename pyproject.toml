@@ -1,0 +1,12 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "muon-wire-estimator"
+version = "0.1.0"
+description = "Muon wire signal estimator"
+requires-python = ">=3.9"
+
+[tool.setuptools.packages.find]
+include = ["muon_wire_estimator*"]

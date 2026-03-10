@@ -1,0 +1,40 @@
+{
+  "geometry": {
+    "sense_wire_radius_m": 3.5e-06,
+    "effective_outer_radius_m": 0.005,
+    "bias_voltage_v": 800.0,
+    "track_closest_approach_m": 0.0005,
+    "active_length_m": 0.3,
+    "track_length_in_active_m": 0.05,
+    "scope_termination_ohm": 50.0,
+    "electronics_rise_time_s": 5e-09,
+    "electronics_fall_time_s": 2e-08,
+    "mean_avalanche_pulse_width_s": 1e-08,
+    "effective_capacitance_f": 0.0,
+    "notes": "Level 2 stochastic event-scan example for a 25 um diameter sense wire and a near-wire muon pass.",
+    "wire_name": "7um_carbon_fiber",
+    "wire_core_diameter_um": 7.0,
+    "muon_closest_approach_mm": 0.5
+  },
+  "gas_name": "ar_co2_70_30_1atm",
+  "simulation": {
+    "n_events": 2000,
+    "random_seed": 12345,
+    "threshold_v": 0.001,
+    "return_event_list": false,
+    "include_zero_signal_events": true,
+    "gain_fluctuation_shape": 1.5,
+    "primary_statistics_model": "poisson",
+    "survival_statistics_model": "binomial"
+  },
+  "use_attachment": true,
+  "use_gain_surrogate": true,
+  "avalanche_pulse_width_s": 1.2e-08,
+  "metadata": {
+    "example_name": "level2_arco2_event_scan",
+    "description": "Level 2 stochastic repeated-event simulation example using Ar/CO2 70/30.",
+    "primary_scope_quantity": "event_records[].peak_voltage_v",
+    "summary_scope_quantity": "fraction_above_threshold",
+    "notes": "Use this file with scripts/run_event_scan.py to estimate event-by-event visibility and threshold crossing."
+  }
+}
