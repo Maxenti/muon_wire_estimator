@@ -1,0 +1,47 @@
+{
+    "gas_name": "air_dry_1atm",
+    "geometry": {
+      "sense_wire_radius_m": 1.25e-05,
+      "effective_outer_radius_m": 0.005,
+      "bias_voltage_v": 1500.0,
+      "track_closest_approach_m": 0.001,
+      "active_length_m": 0.3,
+      "track_length_in_active_m": 0.05,
+      "scope_termination_ohm": 50.0,
+      "electronics_rise_time_s": 5.0e-09,
+      "electronics_fall_time_s": 2.0e-08,
+      "mean_avalanche_pulse_width_s": 1.0e-08,
+      "effective_capacitance_f": 0.0,
+      "notes": "25 um uncoated carbon-fiber wire in air for beta-source estimation."
+    },
+    "source": {
+      "spectrum_model": "sr90_y90_combined",
+      "include_sr90_branch": true,
+      "include_y90_branch": true,
+      "source_activity_bq": 1000000.0,
+      "collimated": false,
+      "angular_spread_deg": 90.0,
+      "track_length_model": "range_limited",
+      "metadata": {
+        "source_label": "Sr90/Y90 check source",
+        "wire_label": "25um_carbon_fiber"
+      }
+    },
+    "source_geometry": {
+      "source_distance_mm": 5.0,
+      "placement_model": "point_isotropic",
+      "collimated": false,
+      "angular_spread_deg": 90.0,
+      "incidence_angle_deg": 0.0,
+      "active_region_thickness_mm": 5.0,
+      "fixed_track_length_cm": 0.5,
+      "track_length_model": "range_limited",
+      "active_region_entry_probability": 1.0,
+      "notes": "Simple isotropic beta-source geometry near a single wire."
+    },
+    "metadata": {
+      "example_name": "beta_sr90_air_25um",
+      "description": "Deterministic beta-source estimate in air for a 25 um uncoated carbon-fiber sense wire.",
+      "primary_scope_quantity": "detector_chain.avalanche_pulse.peak_voltage_v"
+    }
+  }

@@ -1,0 +1,58 @@
+{
+    "gas_name": "ar_co2_70_30_1atm",
+    "geometry": {
+      "sense_wire_radius_m": 4.3e-06,
+      "effective_outer_radius_m": 0.005,
+      "bias_voltage_v": 1500.0,
+      "track_closest_approach_m": 0.001,
+      "active_length_m": 0.3,
+      "track_length_in_active_m": 0.05,
+      "scope_termination_ohm": 50.0,
+      "electronics_rise_time_s": 5.0e-09,
+      "electronics_fall_time_s": 2.0e-08,
+      "mean_avalanche_pulse_width_s": 1.0e-08,
+      "effective_capacitance_f": 0.0,
+      "notes": "Event-scan example for beta-source response on a thin Ni-coated wire."
+    },
+    "source": {
+      "spectrum_model": "sr90_y90_combined",
+      "include_sr90_branch": true,
+      "include_y90_branch": true,
+      "source_activity_bq": 1000000.0,
+      "collimated": true,
+      "angular_spread_deg": 15.0,
+      "track_length_model": "range_limited",
+      "metadata": {
+        "source_label": "Sr90/Y90 collimated source",
+        "wire_label": "8um_cf_0p3um_ni"
+      }
+    },
+    "source_geometry": {
+      "source_distance_mm": 5.0,
+      "placement_model": "point_collimated",
+      "collimated": true,
+      "angular_spread_deg": 15.0,
+      "incidence_angle_deg": 0.0,
+      "active_region_thickness_mm": 5.0,
+      "fixed_track_length_cm": 0.5,
+      "track_length_model": "range_limited",
+      "active_region_entry_probability": 1.0,
+      "notes": "Simple collimated beta-source geometry aimed toward the active region."
+    },
+    "simulation": {
+      "n_events": 2000,
+      "random_seed": 12345,
+      "return_event_list": false,
+      "include_zero_signal_events": true,
+      "gain_fluctuation_shape": 1.5,
+      "primary_statistics_model": "poisson",
+      "survival_statistics_model": "binomial",
+      "threshold_v": 0.001
+    },
+    "metadata": {
+      "example_name": "beta_sr90_event_scan",
+      "description": "Stochastic beta-source event scan using an Sr-90/Y-90 source and a thin Ni-coated wire in Ar/CO2.",
+      "primary_scope_quantity": "detector_summary.avalanche_pulse.peak_voltage_v",
+      "summary_scope_quantity": "event_summary.fraction_above_threshold"
+    }
+  }

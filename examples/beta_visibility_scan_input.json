@@ -1,0 +1,47 @@
+{
+    "voltages_V": [0, 100, 500, 1000, 1500, 2000],
+    "gases": [
+      "air_dry_1atm",
+      "ar_co2_70_30_1atm"
+    ],
+    "wire_configs": [
+      {
+        "wire_name": "25um_carbon_fiber",
+        "wire_core_diameter_um": 25.0,
+        "coating_thickness_um": 0.0
+      },
+      {
+        "wire_name": "8um_cf_0p3um_ni",
+        "wire_core_diameter_um": 8.0,
+        "coating_thickness_um": 0.3
+      }
+    ],
+    "muon_closest_approach_mm": 1.0,
+    "effective_outer_radius_mm": 5.0,
+    "active_length_m": 0.30,
+    "track_length_in_active_m": 0.05,
+    "threshold_v": 0.001,
+    "n_events": 2000,
+    "random_seed": 12345,
+    "source": {
+      "spectrum_model": "sr90_y90_combined",
+      "include_sr90_branch": true,
+      "include_y90_branch": true,
+      "source_activity_bq": 1000000.0,
+      "collimated": true,
+      "angular_spread_deg": 15.0,
+      "track_length_model": "range_limited"
+    },
+    "source_geometry": {
+      "source_distance_mm": 5.0,
+      "placement_model": "point_collimated",
+      "collimated": true,
+      "angular_spread_deg": 15.0,
+      "incidence_angle_deg": 0.0,
+      "active_region_thickness_mm": 5.0,
+      "fixed_track_length_cm": 0.5,
+      "track_length_model": "range_limited",
+      "active_region_entry_probability": 1.0,
+      "notes": "Collimated beta source aimed toward the active region."
+    }
+  }
