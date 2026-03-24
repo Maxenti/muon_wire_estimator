@@ -1,0 +1,5 @@
+coating_thickness_um,det_peak_voltage_mV_at_first_visible,effective_diameter_um,fraction_required,gain_model,gas_name,minimum_visible_voltage_V,sto_fraction_above_threshold_at_first_visible,sto_max_peak_voltage_mV_at_first_visible,sto_median_peak_voltage_mV_at_first_visible,threshold_v,visible_at_scan_max,wire_core_diameter_um,wire_name
+0.0,,25.0,0.5,diethorn_like,air_dry_1atm,,,,,,False,25.0,25um_carbon_fiber
+0.3,,8.6,0.5,diethorn_like,air_dry_1atm,,,,,,False,8.0,8um_cf_0p3um_ni
+0.0,1.2641058944877186,25.0,0.5,diethorn_like,ar_co2_75_25_1atm,1600.0,0.5105,6.675987327193687,1.0177829559061697,0.001,True,25.0,25um_carbon_fiber
+0.3,2.4797586827431157,8.6,0.5,diethorn_like,ar_co2_75_25_1atm,1400.0,0.747,13.0960844440967,1.9965543496489082,0.001,True,8.0,8um_cf_0p3um_ni

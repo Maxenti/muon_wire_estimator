@@ -67,6 +67,24 @@ def build_geometry_for_current_repo(
     }
 
 
+def build_common_estimator_settings(scan_cfg: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "use_attachment": bool(scan_cfg.get("use_attachment", True)),
+        "use_gain_surrogate": bool(scan_cfg.get("use_gain_surrogate", True)),
+        "gain_model": str(scan_cfg.get("gain_model", "phenomenological_capped")),
+        "diethorn_delta_v": float(scan_cfg.get("diethorn_delta_v", 35.0)),
+        "diethorn_e_min_over_p_v_per_cm_torr": float(
+            scan_cfg.get("diethorn_e_min_over_p_v_per_cm_torr", 50.0)
+        ),
+        "diethorn_apply_gain_cap": bool(
+            scan_cfg.get("diethorn_apply_gain_cap", False)
+        ),
+        "avalanche_pulse_width_s": float(
+            scan_cfg.get("avalanche_pulse_width_s", 1.2e-8)
+        ),
+    }
+
+
 def extract_summary_row(
     *,
     gas_name: str,
@@ -76,6 +94,12 @@ def extract_summary_row(
     voltage_v: float,
     closest_approach_mm: float,
     threshold_v: float,
+    use_attachment: bool,
+    use_gain_surrogate: bool,
+    gain_model: str,
+    diethorn_delta_v: float,
+    diethorn_e_min_over_p_v_per_cm_torr: float,
+    diethorn_apply_gain_cap: bool,
     deterministic: dict[str, Any],
     stochastic: dict[str, Any],
 ) -> dict[str, Any]:
@@ -92,6 +116,12 @@ def extract_summary_row(
         "muon_closest_approach_mm": closest_approach_mm,
         "threshold_v": threshold_v,
         "threshold_mV": threshold_v * 1.0e3,
+        "use_attachment": use_attachment,
+        "use_gain_surrogate": use_gain_surrogate,
+        "gain_model": gain_model,
+        "diethorn_delta_v": diethorn_delta_v,
+        "diethorn_e_min_over_p_v_per_cm_torr": diethorn_e_min_over_p_v_per_cm_torr,
+        "diethorn_apply_gain_cap": diethorn_apply_gain_cap,
         # deterministic
         "det_created_primary_electrons_mean": deterministic.get("created_primary_electrons_mean"),
         "det_collected_primary_electrons_mean": deterministic.get("collected_primary_electrons_mean"),
@@ -157,13 +187,14 @@ def choose_visibility_voltage(
     *,
     fraction_required: float,
 ) -> list[dict[str, Any]]:
-    grouped: dict[tuple[str, str, float, float], list[dict[str, Any]]] = {}
+    grouped: dict[tuple[str, str, float, float, str], list[dict[str, Any]]] = {}
     for row in rows:
         key = (
             row["gas_name"],
             row["wire_name"],
             row["wire_core_diameter_um"],
             row["coating_thickness_um"],
+            row["gain_model"],
         )
         grouped.setdefault(key, []).append(row)
 
@@ -179,13 +210,14 @@ def choose_visibility_voltage(
             None,
         )
 
-        gas_name, wire_name, diameter_um, coating_thickness_um = key
+        gas_name, wire_name, diameter_um, coating_thickness_um, gain_model = key
         output.append({
             "gas_name": gas_name,
             "wire_name": wire_name,
             "wire_core_diameter_um": diameter_um,
             "coating_thickness_um": coating_thickness_um,
             "effective_diameter_um": diameter_um + 2.0 * coating_thickness_um,
+            "gain_model": gain_model,
             "fraction_required": fraction_required,
             "minimum_visible_voltage_V": None if visible is None else visible["wire_voltage_V"],
             "visible_at_scan_max": visible is not None,
@@ -240,6 +272,8 @@ def main() -> int:
     n_events = int(scan_cfg.get("n_events", 2000))
     random_seed = int(scan_cfg.get("random_seed", 12345))
 
+    common_settings = build_common_estimator_settings(scan_cfg)
+
     rows: list[dict[str, Any]] = []
     detailed_results: list[dict[str, Any]] = []
 
@@ -265,20 +299,29 @@ def main() -> int:
                 det_cfg = {
                     "geometry": geometry,
                     "gas_name": gas_name,
-                    "use_attachment": True,
-                    "use_gain_surrogate": True,
-                    "avalanche_pulse_width_s": 1.2e-8,
+                    "use_attachment": common_settings["use_attachment"],
+                    "use_gain_surrogate": common_settings["use_gain_surrogate"],
+                    "gain_model": common_settings["gain_model"],
+                    "diethorn_delta_v": common_settings["diethorn_delta_v"],
+                    "diethorn_e_min_over_p_v_per_cm_torr": common_settings["diethorn_e_min_over_p_v_per_cm_torr"],
+                    "diethorn_apply_gain_cap": common_settings["diethorn_apply_gain_cap"],
+                    "avalanche_pulse_width_s": common_settings["avalanche_pulse_width_s"],
                     "metadata": {
                         "scan_kind": "visibility_scan",
+                        "gain_model": common_settings["gain_model"],
                     },
                 }
 
                 sto_cfg = {
                     "geometry": geometry,
                     "gas_name": gas_name,
-                    "use_attachment": True,
-                    "use_gain_surrogate": True,
-                    "avalanche_pulse_width_s": 1.2e-8,
+                    "use_attachment": common_settings["use_attachment"],
+                    "use_gain_surrogate": common_settings["use_gain_surrogate"],
+                    "gain_model": common_settings["gain_model"],
+                    "diethorn_delta_v": common_settings["diethorn_delta_v"],
+                    "diethorn_e_min_over_p_v_per_cm_torr": common_settings["diethorn_e_min_over_p_v_per_cm_torr"],
+                    "diethorn_apply_gain_cap": common_settings["diethorn_apply_gain_cap"],
+                    "avalanche_pulse_width_s": common_settings["avalanche_pulse_width_s"],
                     "simulation": {
                         "n_events": n_events,
                         "random_seed": random_seed,
@@ -291,6 +334,7 @@ def main() -> int:
                     },
                     "metadata": {
                         "scan_kind": "visibility_scan",
+                        "gain_model": common_settings["gain_model"],
                     },
                 }
 
@@ -330,6 +374,14 @@ def main() -> int:
                     voltage_v=float(voltage_v),
                     closest_approach_mm=closest_approach_mm,
                     threshold_v=threshold_v,
+                    use_attachment=bool(common_settings["use_attachment"]),
+                    use_gain_surrogate=bool(common_settings["use_gain_surrogate"]),
+                    gain_model=str(common_settings["gain_model"]),
+                    diethorn_delta_v=float(common_settings["diethorn_delta_v"]),
+                    diethorn_e_min_over_p_v_per_cm_torr=float(
+                        common_settings["diethorn_e_min_over_p_v_per_cm_torr"]
+                    ),
+                    diethorn_apply_gain_cap=bool(common_settings["diethorn_apply_gain_cap"]),
                     deterministic=deterministic,
                     stochastic=stochastic,
                 )
@@ -343,6 +395,7 @@ def main() -> int:
                         "coating_thickness_um": coating_thickness_um,
                         "wire_voltage_V": float(voltage_v),
                         "muon_closest_approach_mm": closest_approach_mm,
+                        "gain_model": common_settings["gain_model"],
                     },
                     "deterministic": deterministic,
                     "stochastic": stochastic,

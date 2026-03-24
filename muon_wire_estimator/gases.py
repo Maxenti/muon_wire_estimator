@@ -14,6 +14,7 @@ transport calculations. They are designed to be:
 The registry includes at minimum:
 - air_dry_1atm
 - ar_co2_70_30_1atm
+- ar_co2_75_25_1atm
 """
 
 from __future__ import annotations
@@ -38,6 +39,9 @@ def _build_builtin_gases() -> dict[str, GasModel]:
     - Ar/CO2 70/30 at 1 atm:
       faster drift, negligible attachment in this simplified picture,
       easier avalanche development than air
+    - Ar/CO2 75/25 at 1 atm:
+      very similar to 70/30 but with slightly more argon content, so in this
+      surrogate picture it is treated as marginally easier to avalanche
 
     Future Level 3 calibration files can override any of these defaults.
     """
@@ -81,6 +85,28 @@ def _build_builtin_gases() -> dict[str, GasModel]:
                 "single-wire engineering estimates before Garfield-based tuning."
             ),
         ),
+        "ar_co2_75_25_1atm": GasModel(
+            name="ar_co2_75_25_1atm",
+            pressure_atm=1.0,
+            temperature_k=293.15,
+            w_value_ev=28.0,
+            mean_energy_loss_mev_per_cm=0.0024,
+            drift_velocity_m_per_s=5.6e4,
+            attachment_time_s=None,
+            collection_efficiency=0.95,
+            gain_field_scale_v_per_m=4.2e6,
+            gain_slope=0.90,
+            gain_cap=1.0e5,
+            fano_factor=0.17,
+            mean_cluster_size_electrons=2.5,
+            notes=(
+                "Phenomenological Ar/CO2 75/25 surrogate intended for simple "
+                "single-wire engineering estimates before Garfield-based tuning. "
+                "Compared with the 70/30 surrogate, this preset assumes slightly "
+                "easier avalanche development from the higher argon fraction while "
+                "keeping transport behavior broadly similar."
+            ),
+        ),
     }
     return gases
 
@@ -117,7 +143,8 @@ def get_gas(name: str) -> GasModel:
     Parameters
     ----------
     name:
-        Registry key such as ``air_dry_1atm`` or ``ar_co2_70_30_1atm``.
+        Registry key such as ``air_dry_1atm``, ``ar_co2_70_30_1atm``, or
+        ``ar_co2_75_25_1atm``.
 
     Raises
     ------

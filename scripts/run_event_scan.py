@@ -22,6 +22,10 @@ Supported config structure
   },
   "use_attachment": true,
   "use_gain_surrogate": true,
+  "gain_model": "phenomenological_capped",
+  "diethorn_delta_v": 35.0,
+  "diethorn_e_min_over_p_v_per_cm_torr": 50.0,
+  "diethorn_apply_gain_cap": false,
   "avalanche_pulse_width_s": 1.2e-08,
   "metadata": { ... }
 }
@@ -152,6 +156,27 @@ def _normalize_metadata(value: Any) -> dict[str, Any]:
     return {str(key): item for key, item in value.items()}
 
 
+def _extract_runtime_settings(data: dict[str, Any]) -> dict[str, Any]:
+    """
+    Extract shared runtime settings for the stochastic simulation.
+    """
+    return {
+        "use_attachment": bool(data.get("use_attachment", True)),
+        "use_gain_surrogate": bool(data.get("use_gain_surrogate", True)),
+        "gain_model": str(data.get("gain_model", "phenomenological_capped")),
+        "diethorn_delta_v": float(data.get("diethorn_delta_v", 35.0)),
+        "diethorn_e_min_over_p_v_per_cm_torr": float(
+            data.get("diethorn_e_min_over_p_v_per_cm_torr", 50.0)
+        ),
+        "diethorn_apply_gain_cap": bool(data.get("diethorn_apply_gain_cap", False)),
+        "avalanche_pulse_width_s": (
+            None
+            if data.get("avalanche_pulse_width_s") is None
+            else float(data["avalanche_pulse_width_s"])
+        ),
+    }
+
+
 def simulation_config_from_mapping(data: dict[str, Any]) -> EventSimulationConfig:
     """
     Build EventSimulationConfig from a generic mapping.
@@ -178,32 +203,33 @@ def run_from_mapping(data: dict[str, Any]) -> dict[str, Any]:
     geometry = geometry_from_mapping(geometry_map)
     gas = resolve_gas(str(data.get("gas_name", "air_dry_1atm")))
     sim_config = simulation_config_from_mapping(simulation_map)
-
-    use_attachment = bool(data.get("use_attachment", True))
-    use_gain_surrogate = bool(data.get("use_gain_surrogate", True))
-    avalanche_pulse_width_s = (
-        None
-        if data.get("avalanche_pulse_width_s") is None
-        else float(data["avalanche_pulse_width_s"])
-    )
+    runtime_settings = _extract_runtime_settings(data)
     metadata = _normalize_metadata(data.get("metadata"))
 
     summary = simulate_and_summarize(
         geometry,
         gas,
         sim_config,
-        use_attachment=use_attachment,
-        use_gain_surrogate=use_gain_surrogate,
-        avalanche_pulse_width_s=avalanche_pulse_width_s,
+        use_attachment=runtime_settings["use_attachment"],
+        use_gain_surrogate=runtime_settings["use_gain_surrogate"],
+        gain_model=runtime_settings["gain_model"],
+        diethorn_delta_v=runtime_settings["diethorn_delta_v"],
+        diethorn_e_min_over_p_v_per_cm_torr=runtime_settings["diethorn_e_min_over_p_v_per_cm_torr"],
+        diethorn_apply_gain_cap=runtime_settings["diethorn_apply_gain_cap"],
+        avalanche_pulse_width_s=runtime_settings["avalanche_pulse_width_s"],
     )
 
     output = simulation_summary_to_dict(summary)
     output["input_metadata"] = metadata
     output["config_snapshot"] = {
         "gas_name": gas.name,
-        "use_attachment": use_attachment,
-        "use_gain_surrogate": use_gain_surrogate,
-        "avalanche_pulse_width_s": avalanche_pulse_width_s,
+        "use_attachment": runtime_settings["use_attachment"],
+        "use_gain_surrogate": runtime_settings["use_gain_surrogate"],
+        "gain_model": runtime_settings["gain_model"],
+        "diethorn_delta_v": runtime_settings["diethorn_delta_v"],
+        "diethorn_e_min_over_p_v_per_cm_torr": runtime_settings["diethorn_e_min_over_p_v_per_cm_torr"],
+        "diethorn_apply_gain_cap": runtime_settings["diethorn_apply_gain_cap"],
+        "avalanche_pulse_width_s": runtime_settings["avalanche_pulse_width_s"],
         "simulation": sim_config.to_dict(),
     }
     return output
@@ -219,32 +245,33 @@ def run_report_view_from_mapping(data: dict[str, Any]) -> dict[str, Any]:
     geometry = geometry_from_mapping(geometry_map)
     gas = resolve_gas(str(data.get("gas_name", "air_dry_1atm")))
     sim_config = simulation_config_from_mapping(simulation_map)
-
-    use_attachment = bool(data.get("use_attachment", True))
-    use_gain_surrogate = bool(data.get("use_gain_surrogate", True))
-    avalanche_pulse_width_s = (
-        None
-        if data.get("avalanche_pulse_width_s") is None
-        else float(data["avalanche_pulse_width_s"])
-    )
+    runtime_settings = _extract_runtime_settings(data)
     metadata = _normalize_metadata(data.get("metadata"))
 
     summary = simulate_and_summarize(
         geometry,
         gas,
         sim_config,
-        use_attachment=use_attachment,
-        use_gain_surrogate=use_gain_surrogate,
-        avalanche_pulse_width_s=avalanche_pulse_width_s,
+        use_attachment=runtime_settings["use_attachment"],
+        use_gain_surrogate=runtime_settings["use_gain_surrogate"],
+        gain_model=runtime_settings["gain_model"],
+        diethorn_delta_v=runtime_settings["diethorn_delta_v"],
+        diethorn_e_min_over_p_v_per_cm_torr=runtime_settings["diethorn_e_min_over_p_v_per_cm_torr"],
+        diethorn_apply_gain_cap=runtime_settings["diethorn_apply_gain_cap"],
+        avalanche_pulse_width_s=runtime_settings["avalanche_pulse_width_s"],
     )
 
     report = summary_to_report_dict(summary)
     report["input_metadata"] = metadata
     report["config_snapshot"] = {
         "gas_name": gas.name,
-        "use_attachment": use_attachment,
-        "use_gain_surrogate": use_gain_surrogate,
-        "avalanche_pulse_width_s": avalanche_pulse_width_s,
+        "use_attachment": runtime_settings["use_attachment"],
+        "use_gain_surrogate": runtime_settings["use_gain_surrogate"],
+        "gain_model": runtime_settings["gain_model"],
+        "diethorn_delta_v": runtime_settings["diethorn_delta_v"],
+        "diethorn_e_min_over_p_v_per_cm_torr": runtime_settings["diethorn_e_min_over_p_v_per_cm_torr"],
+        "diethorn_apply_gain_cap": runtime_settings["diethorn_apply_gain_cap"],
+        "avalanche_pulse_width_s": runtime_settings["avalanche_pulse_width_s"],
         "simulation": sim_config.to_dict(),
     }
     return report

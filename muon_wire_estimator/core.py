@@ -66,6 +66,10 @@ def build_estimator_config(
     include_avalanche_signal: bool = True,
     use_attachment: bool = True,
     use_gain_surrogate: bool = True,
+    gain_model: str = "phenomenological_capped",
+    diethorn_delta_v: float = 35.0,
+    diethorn_e_min_over_p_v_per_cm_torr: float = 50.0,
+    diethorn_apply_gain_cap: bool = False,
     direct_charge_efficiency: float = 1.0,
     avalanche_pulse_width_s: float | None = None,
     output_event_details: bool = False,
@@ -81,6 +85,10 @@ def build_estimator_config(
         include_avalanche_signal=include_avalanche_signal,
         use_attachment=use_attachment,
         use_gain_surrogate=use_gain_surrogate,
+        gain_model=gain_model,
+        diethorn_delta_v=diethorn_delta_v,
+        diethorn_e_min_over_p_v_per_cm_torr=diethorn_e_min_over_p_v_per_cm_torr,
+        diethorn_apply_gain_cap=diethorn_apply_gain_cap,
         direct_charge_efficiency=direct_charge_efficiency,
         avalanche_pulse_width_s=avalanche_pulse_width_s,
         output_event_details=output_event_details,
@@ -119,6 +127,10 @@ def estimate_from_config(config: EstimatorConfig) -> DeterministicEstimate:
         gas,
         collected_primary_electrons_mean,
         use_gain_surrogate=config.use_gain_surrogate,
+        gain_model=config.gain_model,
+        diethorn_delta_v=config.diethorn_delta_v,
+        diethorn_e_min_over_p_v_per_cm_torr=config.diethorn_e_min_over_p_v_per_cm_torr,
+        diethorn_apply_gain_cap=config.diethorn_apply_gain_cap,
     )
 
     direct_pulse = None
@@ -150,6 +162,12 @@ def estimate_from_config(config: EstimatorConfig) -> DeterministicEstimate:
         notes.append("Attachment losses were disabled by configuration.")
     if not config.use_gain_surrogate:
         notes.append("Gas gain surrogate was disabled; unity gain was used.")
+    if config.use_gain_surrogate:
+        notes.append(f"Gain model selected: {config.gain_model}.")
+        if config.gain_model == "diethorn_like":
+            notes.append(
+                "Diethorn-like gain mode was enabled using cylindrical single-wire hand-calculation style parameters."
+            )
     if not config.include_direct_image_pulse:
         notes.append("Direct muon image pulse block was omitted by configuration.")
     if not config.include_avalanche_signal:
@@ -193,6 +211,10 @@ def estimate(
     include_avalanche_signal: bool = True,
     use_attachment: bool = True,
     use_gain_surrogate: bool = True,
+    gain_model: str = "phenomenological_capped",
+    diethorn_delta_v: float = 35.0,
+    diethorn_e_min_over_p_v_per_cm_torr: float = 50.0,
+    diethorn_apply_gain_cap: bool = False,
     direct_charge_efficiency: float = 1.0,
     avalanche_pulse_width_s: float | None = None,
     output_event_details: bool = False,
@@ -215,6 +237,16 @@ def estimate(
         Whether to apply attachment losses in drift/collection.
     use_gain_surrogate:
         Whether to apply the Level 1 gas-gain surrogate.
+    gain_model:
+        Gain model selector. Supported values are intended to include:
+        - "phenomenological_capped"
+        - "diethorn_like"
+    diethorn_delta_v:
+        DeltaV parameter used only when gain_model == "diethorn_like".
+    diethorn_e_min_over_p_v_per_cm_torr:
+        E_min / p parameter used only when gain_model == "diethorn_like".
+    diethorn_apply_gain_cap:
+        Whether to also apply the gas-model gain cap in Diethorn-like mode.
     direct_charge_efficiency:
         Scaling factor applied only to the direct-image source charge.
     avalanche_pulse_width_s:
@@ -232,6 +264,10 @@ def estimate(
         include_avalanche_signal=include_avalanche_signal,
         use_attachment=use_attachment,
         use_gain_surrogate=use_gain_surrogate,
+        gain_model=gain_model,
+        diethorn_delta_v=diethorn_delta_v,
+        diethorn_e_min_over_p_v_per_cm_torr=diethorn_e_min_over_p_v_per_cm_torr,
+        diethorn_apply_gain_cap=diethorn_apply_gain_cap,
         direct_charge_efficiency=direct_charge_efficiency,
         avalanche_pulse_width_s=avalanche_pulse_width_s,
         output_event_details=output_event_details,
@@ -260,6 +296,10 @@ def estimate_to_dict(
     include_avalanche_signal: bool = True,
     use_attachment: bool = True,
     use_gain_surrogate: bool = True,
+    gain_model: str = "phenomenological_capped",
+    diethorn_delta_v: float = 35.0,
+    diethorn_e_min_over_p_v_per_cm_torr: float = 50.0,
+    diethorn_apply_gain_cap: bool = False,
     direct_charge_efficiency: float = 1.0,
     avalanche_pulse_width_s: float | None = None,
     output_event_details: bool = False,
@@ -275,6 +315,10 @@ def estimate_to_dict(
         include_avalanche_signal=include_avalanche_signal,
         use_attachment=use_attachment,
         use_gain_surrogate=use_gain_surrogate,
+        gain_model=gain_model,
+        diethorn_delta_v=diethorn_delta_v,
+        diethorn_e_min_over_p_v_per_cm_torr=diethorn_e_min_over_p_v_per_cm_torr,
+        diethorn_apply_gain_cap=diethorn_apply_gain_cap,
         direct_charge_efficiency=direct_charge_efficiency,
         avalanche_pulse_width_s=avalanche_pulse_width_s,
         output_event_details=output_event_details,
@@ -316,6 +360,12 @@ def config_from_mapping(data: dict[str, Any]) -> EstimatorConfig:
         include_avalanche_signal=bool(data.get("include_avalanche_signal", True)),
         use_attachment=bool(data.get("use_attachment", True)),
         use_gain_surrogate=bool(data.get("use_gain_surrogate", True)),
+        gain_model=str(data.get("gain_model", "phenomenological_capped")),
+        diethorn_delta_v=float(data.get("diethorn_delta_v", 35.0)),
+        diethorn_e_min_over_p_v_per_cm_torr=float(
+            data.get("diethorn_e_min_over_p_v_per_cm_torr", 50.0)
+        ),
+        diethorn_apply_gain_cap=bool(data.get("diethorn_apply_gain_cap", False)),
         direct_charge_efficiency=float(data.get("direct_charge_efficiency", 1.0)),
         avalanche_pulse_width_s=(
             None

@@ -45,9 +45,7 @@ from .pulse import build_avalanche_pulse
 from .randomness import (
     SeededRNG,
     make_rng,
-    sample_binomial,
     sample_gamma_gain,
-    sample_poisson,
 )
 
 
@@ -205,6 +203,10 @@ def simulate_event(
     rng: SeededRNG,
     use_attachment: bool = True,
     use_gain_surrogate: bool = True,
+    gain_model: str = "phenomenological_capped",
+    diethorn_delta_v: float = 35.0,
+    diethorn_e_min_over_p_v_per_cm_torr: float = 50.0,
+    diethorn_apply_gain_cap: bool = False,
     avalanche_pulse_width_s: float | None = None,
 ) -> StochasticEventResult:
     """
@@ -250,6 +252,10 @@ def simulate_event(
         geometry,
         gas_model,
         use_gain_surrogate=use_gain_surrogate,
+        gain_model=gain_model,
+        diethorn_delta_v=diethorn_delta_v,
+        diethorn_e_min_over_p_v_per_cm_torr=diethorn_e_min_over_p_v_per_cm_torr,
+        diethorn_apply_gain_cap=diethorn_apply_gain_cap,
     )
 
     gain_sample = _sample_gas_gain(
@@ -283,6 +289,10 @@ def simulate_event(
             "gas_name": gas_model.name,
             "use_attachment": use_attachment,
             "use_gain_surrogate": use_gain_surrogate,
+            "gain_model": gain_model,
+            "diethorn_delta_v": diethorn_delta_v,
+            "diethorn_e_min_over_p_v_per_cm_torr": diethorn_e_min_over_p_v_per_cm_torr,
+            "diethorn_apply_gain_cap": diethorn_apply_gain_cap,
             "collection_fraction_mean": collection_fraction,
             "mean_gain": mean_gain,
         },
@@ -296,6 +306,10 @@ def simulate_events(
     *,
     use_attachment: bool = True,
     use_gain_surrogate: bool = True,
+    gain_model: str = "phenomenological_capped",
+    diethorn_delta_v: float = 35.0,
+    diethorn_e_min_over_p_v_per_cm_torr: float = 50.0,
+    diethorn_apply_gain_cap: bool = False,
     avalanche_pulse_width_s: float | None = None,
 ) -> list[StochasticEventResult]:
     """
@@ -321,6 +335,10 @@ def simulate_events(
             rng=rng,
             use_attachment=use_attachment,
             use_gain_surrogate=use_gain_surrogate,
+            gain_model=gain_model,
+            diethorn_delta_v=diethorn_delta_v,
+            diethorn_e_min_over_p_v_per_cm_torr=diethorn_e_min_over_p_v_per_cm_torr,
+            diethorn_apply_gain_cap=diethorn_apply_gain_cap,
             avalanche_pulse_width_s=avalanche_pulse_width_s,
         )
         if sim_config.include_zero_signal_events or event.peak_voltage_v > 0.0:
@@ -411,6 +429,10 @@ def simulate_and_summarize(
     *,
     use_attachment: bool = True,
     use_gain_surrogate: bool = True,
+    gain_model: str = "phenomenological_capped",
+    diethorn_delta_v: float = 35.0,
+    diethorn_e_min_over_p_v_per_cm_torr: float = 50.0,
+    diethorn_apply_gain_cap: bool = False,
     avalanche_pulse_width_s: float | None = None,
 ) -> EventSimulationSummary:
     """
@@ -425,6 +447,10 @@ def simulate_and_summarize(
         sim_config,
         use_attachment=use_attachment,
         use_gain_surrogate=use_gain_surrogate,
+        gain_model=gain_model,
+        diethorn_delta_v=diethorn_delta_v,
+        diethorn_e_min_over_p_v_per_cm_torr=diethorn_e_min_over_p_v_per_cm_torr,
+        diethorn_apply_gain_cap=diethorn_apply_gain_cap,
         avalanche_pulse_width_s=avalanche_pulse_width_s,
     )
 
@@ -438,6 +464,10 @@ def simulate_and_summarize(
             "gas_name": gas_model.name,
             "use_attachment": use_attachment,
             "use_gain_surrogate": use_gain_surrogate,
+            "gain_model": gain_model,
+            "diethorn_delta_v": diethorn_delta_v,
+            "diethorn_e_min_over_p_v_per_cm_torr": diethorn_e_min_over_p_v_per_cm_torr,
+            "diethorn_apply_gain_cap": diethorn_apply_gain_cap,
             "primary_statistics_proxy": ionization_proxy,
         },
     )

@@ -1,0 +1,37 @@
+{
+  "voltages_V": [
+    0, 200, 400, 600, 800, 1000,
+    1100, 1200, 1300, 1400, 1500,
+    1600, 1700, 1800, 1900, 2000,
+    2050, 2100, 2150, 2200
+  ],
+  "gases": [
+    "air_dry_1atm",
+    "ar_co2_75_25_1atm"
+  ],
+  "wire_configs": [
+    {
+      "wire_name": "25um_carbon_fiber",
+      "wire_core_diameter_um": 25.0,
+      "coating_thickness_um": 0.0
+    },
+    {
+      "wire_name": "8um_cf_0p3um_ni",
+      "wire_core_diameter_um": 8.0,
+      "coating_thickness_um": 0.3
+    }
+  ],
+  "muon_closest_approach_mm": 1.0,
+  "effective_outer_radius_mm": 5.0,
+  "active_length_m": 0.30,
+  "track_length_in_active_m": 0.05,
+  "threshold_v": 0.001,
+  "n_events": 2000,
+  "random_seed": 12345,
+  "use_attachment": true,
+  "use_gain_surrogate": true,
+  "gain_model": "phenomenological_capped",
+  "diethorn_delta_v": 35.0,
+  "diethorn_e_min_over_p_v_per_cm_torr": 50.0,
+  "diethorn_apply_gain_cap": false
+}

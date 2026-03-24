@@ -1,18 +1,3 @@
-"""
-Core data models for the muon wire estimator package.
-
-This module defines the stable, JSON-friendly dataclasses used across all
-three estimator realism levels. The intent is to keep the package readable
-and lightweight while still providing a disciplined schema for:
-
-- geometry and gas descriptions
-- deterministic mean-estimate outputs
-- event simulation configuration and summaries
-- calibration record structures
-
-The package is designed to remain standard-library-only.
-"""
-
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass, field, is_dataclass
@@ -103,7 +88,11 @@ class GeometryModel:
         _ensure_positive(
             "mean_avalanche_pulse_width_s", self.mean_avalanche_pulse_width_s
         )
-        _ensure_positive("effective_capacitance_f", self.effective_capacitance_f, allow_zero=True)
+        _ensure_positive(
+            "effective_capacitance_f",
+            self.effective_capacitance_f,
+            allow_zero=True,
+        )
 
     @property
     def ln_b_over_a(self) -> float:
@@ -145,6 +134,7 @@ class GasModel:
     gain_cap:
         Hard upper cap on surrogate mean gas gain.
     """
+
     name: str
     pressure_atm: float
     temperature_k: float
@@ -238,6 +228,22 @@ class EstimatorConfig:
 
     This structure keeps the direct image-pulse path distinct from the
     avalanche path and provides toggles for mean-estimate calculations.
+
+    Gain-model controls
+    -------------------
+    gain_model:
+        Selects the deterministic gain surrogate. Intended values:
+        - "phenomenological_capped"
+        - "diethorn_like"
+
+    diethorn_delta_v:
+        DeltaV parameter used only when gain_model == "diethorn_like".
+
+    diethorn_e_min_over_p_v_per_cm_torr:
+        E_min / p parameter used only when gain_model == "diethorn_like".
+
+    diethorn_apply_gain_cap:
+        If True, also apply the gas-model gain_cap in the Diethorn-like mode.
     """
 
     geometry: GeometryModel
@@ -246,6 +252,10 @@ class EstimatorConfig:
     include_avalanche_signal: bool = True
     use_attachment: bool = True
     use_gain_surrogate: bool = True
+    gain_model: str = "phenomenological_capped"
+    diethorn_delta_v: float = 35.0
+    diethorn_e_min_over_p_v_per_cm_torr: float = 50.0
+    diethorn_apply_gain_cap: bool = False
     direct_charge_efficiency: float = 1.0
     avalanche_pulse_width_s: float | None = None
     output_event_details: bool = False
@@ -253,7 +263,13 @@ class EstimatorConfig:
 
     def __post_init__(self) -> None:
         _ensure_non_empty("gas_name", self.gas_name)
+        _ensure_non_empty("gain_model", self.gain_model)
         _ensure_fraction("direct_charge_efficiency", self.direct_charge_efficiency)
+        _ensure_positive("diethorn_delta_v", self.diethorn_delta_v)
+        _ensure_positive(
+            "diethorn_e_min_over_p_v_per_cm_torr",
+            self.diethorn_e_min_over_p_v_per_cm_torr,
+        )
         if self.avalanche_pulse_width_s is not None:
             _ensure_positive("avalanche_pulse_width_s", self.avalanche_pulse_width_s)
 
